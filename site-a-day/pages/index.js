@@ -3,21 +3,13 @@ import Link from 'next/link';
 import styles from '../styles/Home.module.css';
 import projects from '../projects.json';
 import ProjectCard from '../components/projectCard';
+import Nav from '../components/nav';
 export default function Home() {
+  const newest = Math.max(parseInt(Object.keys(projects)));
+  console.log(newest);
   return (
     <>
-      <nav>
-        <Link href='/'>
-          <a className='logo'>100 Lessons, 100 Days</a>
-        </Link>
-        <div>
-          <Link href='/about'>
-            <a>ABOUT</a>
-          </Link>
-
-          <a href='https://github.com/Evrgreen/site-a-day'>GITHUB</a>
-        </div>
-      </nav>
+      <Nav />
       <header className='heading'>
         <h2>
           Hi, my name's <strong>Robbie!</strong>
@@ -33,48 +25,28 @@ export default function Home() {
       </header>
       <section className='projects'>
         <div className='project__latest'>
-          <Link href='#'>
-            <a>Check out my latest Project</a>
+          <Link href='/project/[id]' as={'/project/' + projects[newest].link}>
+            <a>Check out my latest Project {projects[newest].title}</a>
           </Link>
         </div>
         <div className='project__old'>
-          <ol>
+          <ol reversed>
             {Object.entries(projects).map((value, index) => {
-              {
-                console.log(value);
-              }
               return (
                 <li>
-                  <Link href='/project/[id]' as={'/project/' + value[1].title}>
-                    <a>{value[1].title}</a>
+                  <Link href='/project/[id]' as={'/project/' + value[1].link}>
+                    <a>
+                      {value[1].title} || Completed: {value[1].date}
+                    </a>
                   </Link>
                 </li>
               );
             })}
-            <li>This Homepage </li>
+            <li>This Homepage || Completed: 8/5/2020 </li>
           </ol>
         </div>
       </section>
       <style jsx>{`
-        nav {
-          display: flex;
-          justify-content: space-between;
-          background: #0d1821;
-          color: #0c7489;
-        }
-        .logo {
-          margin: 5px 5rem;
-          font-weight: 700;
-        }
-        nav div {
-          width: 30%;
-          display: flex;
-          justify-content: space-around;
-        }
-        nav div > * {
-          margin-top: 5px;
-          font-weight: 800;
-        }
         .heading {
           background-color: #a8d0db;
           padding: 5rem;
