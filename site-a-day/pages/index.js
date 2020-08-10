@@ -5,7 +5,16 @@ import projects from '../projects.json';
 import ProjectCard from '../components/projectCard';
 import Nav from '../components/nav';
 export default function Home() {
-  const newest = Math.max(parseInt(Object.keys(projects)));
+  const findNewest = () => {
+    const projectArray = Object.keys(projects).map(
+      (item) => (item = parseInt(item, 10)),
+    );
+    console.log(projectArray);
+
+    return Math.max(...projectArray).toString();
+  };
+  const newest = findNewest();
+
   console.log(newest);
   return (
     <>
@@ -31,17 +40,19 @@ export default function Home() {
         </div>
         <div className='project__old'>
           <ol reversed>
-            {Object.entries(projects).map((value, index) => {
-              return (
-                <li>
-                  <Link href='/project/[id]' as={'/project/' + value[1].link}>
-                    <a>
-                      {value[1].title} || Completed: {value[1].date}
-                    </a>
-                  </Link>
-                </li>
-              );
-            })}
+            {Object.entries(projects)
+              .reverse()
+              .map((value, index) => {
+                return (
+                  <li key={index}>
+                    <Link href='/project/[id]' as={'/project/' + value[1].link}>
+                      <a>
+                        {value[1].title} || Completed: {value[1].date}
+                      </a>
+                    </Link>
+                  </li>
+                );
+              })}
             <li>This Homepage || Completed: 8/5/2020 </li>
           </ol>
         </div>
